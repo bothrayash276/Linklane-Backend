@@ -9,5 +9,5 @@ export default async function login(email, password, db) {
     const hash = user.password
     const result = await bcrypt.compare(password, hash)
 
-    if(result)
+    if(!result) return 0
 }

@@ -17,8 +17,9 @@ export default async function signUp(name, email, password, img_url, bio, db) {
     const collection = await db.collection("users")
     const user = await collection.findOne({email : email})
     if (!user) {
-       await collection.insertOne(Schema)
-       return 1 
+       await collection.insertOne(Schema) 
+       return user
     }
-    else return 0
+    return 0
+
 }

@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { MongoClient } from 'mongodb'
 import signUp from './components/signupSchema'
+import genJWT from './components/genJWT'
 dotenv.config()
 
 const app = express()
@@ -19,9 +20,24 @@ const userDB = client.db("Linklane")
 app.post('/register', async (req, res) => {
     const {name, email, password, img_url, bio} = await req.body
     const success = await signUp(name, email, password, img_url, bio, userDB)
-    if(success) res.send("Registration Successfull")
-    else res.send("User already registered")
+    if(!success) res.status(409).json(
+        {
+            message : "User already registered"
+        }
+    )
+    
+    const accessToken = await genJWT(success.id, success.email)
+
+    res.status(201).json(
+        {
+            message : "User Registered Successfully",
+            token,
+        }
+    )
 })
+
+
+// Login 
 
 
 
