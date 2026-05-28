@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { MongoClient } from 'mongodb'
 import signUp from './components/signupSchema'
 import genJWT from './components/genJWT'
+import login from './components/login'
 dotenv.config()
 
 const app = express()
@@ -31,14 +32,32 @@ app.post('/register', async (req, res) => {
     res.status(201).json(
         {
             message : "User Registered Successfully",
-            token,
+            accessToken,
         }
     )
 })
 
 
 // Login 
+app.post('/login', async (req, res) => {
+    const {email, password} = await req.body
+    const success = await login(email, password, userDB)
+    if(!success) res.status(401).json(
+        {
+            message : "Invalid Credentials"
+        }
+    )
 
+    const accessToken = await genJWT(success.id, success.email)
+
+    res.status(200).json(
+        {
+            message : "Login Successfull",
+            accessToken
+        }
+    )
+
+})
 
 
 //  Port Listening
