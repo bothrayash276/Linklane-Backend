@@ -1,0 +1,82 @@
+```gitignore
+# Dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build output
+dist/
+build/
+
+# Temporary files
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Parcel cache
+.parcel-cache/
+
+# Next.js
+.next/
+
+# Vite cache
+vite.svg
+
+# Mac system files
+.AppleDouble
+.LSOverride
+
+# Linux files
+*~
+
+# Debug files
+*.out
+
+# SQLite database files
+*.sqlite
+*.sqlite3
+
+# Local databases
+database.db
+
+# Test output
+coverage-final.json
+
+# Misc
+*.tgz
+```
