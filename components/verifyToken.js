@@ -3,10 +3,8 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export async function decodeJWT(auth) {
-    const accessToken = auth.split(" ")[1]
-
     try {
-        const decode = jwt.verify(accessToken, process.env.JWT_SECRET)
+        const decode = jwt.verify(auth, process.env.JWT_SECRET)
         return decode
     }
     catch {

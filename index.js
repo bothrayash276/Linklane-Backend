@@ -5,6 +5,8 @@ import { MongoClient } from 'mongodb'
 import signUp from './components/signupSchema.js'
 import genJWT from './components/genJWT.js'
 import login from './components/login.js'
+import { decodeJWT } from './components/verifyToken.js'
+import updateLink from './components/changeLinks.js'
 dotenv.config()
 
 const app = express()
@@ -57,6 +59,35 @@ app.post('/login', async (req, res) => {
             accessToken
         }
     )
+
+})
+
+
+// Addition of Links
+app.post('/updatelinks', async (req, res) => {
+
+    const authHeader = await req.headers.authorization
+
+    if(!authHeader) res.status(401).json({
+        "message" : "No token provided"
+    })
+
+    const {links} = await req.body 
+    const accessToken = await decodeJWT(authHeader)
+
+    if (!accessToken) res.status(403).json({
+        "message" : "Invalid Token"
+    })
+    
+    const result = await updateLink(accessToken, userDB, links)
+    
+    if(!result) res.status(404).json({
+        "message" : "User not found"
+    })
+    
+    res.status(200).json({
+        "message" : "Links added successfully"
+    })
 
 })
 
