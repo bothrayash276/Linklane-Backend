@@ -2,14 +2,15 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { MongoClient } from 'mongodb'
-import signUp from './components/signupSchema'
-import genJWT from './components/genJWT'
-import login from './components/login'
+import signUp from './components/signupSchema.js'
+import genJWT from './components/genJWT.js'
+import login from './components/login.js'
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
 app.use(cors())
+app.use(express.json())
 
 // Connecting to MongoDB Client
 const client = new MongoClient(process.env.MONGO_URI)
