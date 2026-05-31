@@ -7,6 +7,7 @@ import genJWT from './components/genJWT.js'
 import login from './components/login.js'
 import { decodeJWT } from './components/verifyToken.js'
 import updateLink from './components/changeLinks.js'
+import imgToURL from './components/Cloudinary.js'
 dotenv.config()
 
 const app = express()
@@ -22,9 +23,11 @@ const userDB = client.db("Linklane")
 
 // Register Port
 app.post('/register', async (req, res) => {
-    const {name, email, password, img_url, bio} = await req.body
-    const success = await signUp(name, email, password, img_url, bio, userDB)
-    if(!success) res.status(409).json(
+    const {name, email, password, img_url, bio, page_color} = await req.body
+    const URL = await imgToURL(img_url)
+    const success = await signUp(name, email, password, URL, bio, page_color, userDB)
+    
+    if(!success) return res.status(409).json(
         {
             message : "User already registered"
         }
@@ -90,6 +93,7 @@ app.post('/updatelinks', async (req, res) => {
     })
 
 })
+
 
 
 //  Port Listening

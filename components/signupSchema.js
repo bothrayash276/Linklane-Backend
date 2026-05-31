@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { v4 } from 'uuid'
 
-export default async function signUp(name, email, password, img_url, bio, db) {
+export default async function signUp(name, email, password, img_url, bio, page_color, db) {
     const hash = await bcrypt.hash(password, 10)
     const Schema = {
         "id" : v4(),
@@ -11,6 +11,7 @@ export default async function signUp(name, email, password, img_url, bio, db) {
         "password" : hash,
         "bio" : bio,
         "img_url" : img_url,
+        "page_color" : page_color,
         "links" : []
     }  
 
@@ -18,7 +19,7 @@ export default async function signUp(name, email, password, img_url, bio, db) {
     const user = await collection.findOne({email : email})
     if (!user) {
        await collection.insertOne(Schema) 
-       return user
+       return Schema
     }
     return 0
 
