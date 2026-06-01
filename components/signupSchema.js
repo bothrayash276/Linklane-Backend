@@ -12,7 +12,7 @@ export default async function signUp(name, email, password, img_url, bio, page_c
         "bio" : bio,
         "img_url" : img_url,
         "page_color" : page_color,
-        "links" : []
+        "links" : {}
     }  
 
     const collection = await db.collection("users")

@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb'
 import signUp from './components/signupSchema.js'
 import genJWT from './components/genJWT.js'
 import login from './components/login.js'
-import { decodeJWT } from './components/verifyToken.js'
+import decodeJWT from './components/verifyToken.js'
 import updateLink from './components/changeLinks.js'
 import imgToURL from './components/Cloudinary.js'
 dotenv.config()
@@ -24,7 +24,8 @@ const userDB = client.db("Linklane")
 // Register Port
 app.post('/register', async (req, res) => {
     const {name, email, password, img_url, bio, page_color} = await req.body
-    const URL = await imgToURL(img_url)
+    //const URL = await imgToURL(img_url)
+    const URL = 'none'
     const success = await signUp(name, email, password, URL, bio, page_color, userDB)
     
     if(!success) return res.status(409).json(
@@ -92,6 +93,33 @@ app.post('/updatelinks', async (req, res) => {
         "message" : "Links added successfully"
     })
 
+})
+
+
+// Public Details
+app.get('/public', async (req, res) => {
+    const id = await req.headers.id
+
+    const collection = await userDB.collection("users")
+    const user = await collection.findOne({id : id})
+
+    if(!user) res.status(404).json({
+        'message' : 'User not found'
+    })
+
+    res.status(200).json(user)
+})
+
+app.get('/permission', async (req, res) => {
+    const {id, accesstoken} = await req.headers
+    const response = await decodeJWT(accesstoken)
+    if (response?.id === id) return res.status(200).json({
+        'message' : 'Permission Granted'
+    })
+
+    res.status(401).json({
+        'message' : 'Permission Denied'
+    })
 })
 
 
