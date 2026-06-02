@@ -68,29 +68,36 @@ app.post('/login', async (req, res) => {
 
 
 // Addition of Links
-app.post('/updatelinks', async (req, res) => {
+app.post('/update', async (req, res) => {
 
-    const authHeader = await req.headers.authorization
+    const authHeader = await req.headers.accesstoken
 
-    if(!authHeader) res.status(401).json({
+    if(!authHeader) return res.status(401).json({
         "message" : "No token provided"
     })
 
-    const {links} = await req.body 
     const accessToken = await decodeJWT(authHeader)
 
-    if (!accessToken) res.status(403).json({
+    if (!accessToken) return res.status(403).json({
         "message" : "Invalid Token"
     })
+
+    const json = await req.body
+
+    if (json.id !== accessToken.id) return res.status(401).json({
+        'message' : 'Unauthorized Access'
+    })
     
-    const result = await updateLink(accessToken, userDB, links)
+
+    const collection = await userDB.collection('users')
+    const result = await collection.findOneAndReplace({id : json.id}, json)
     
     if(!result) res.status(404).json({
         "message" : "User not found"
     })
     
     res.status(200).json({
-        "message" : "Links added successfully"
+        "message" : "Profile Updated Successfully"
     })
 
 })
