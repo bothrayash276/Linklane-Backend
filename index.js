@@ -7,7 +7,6 @@ import genJWT from './components/genJWT.js'
 import login from './components/login.js'
 import decodeJWT from './components/verifyToken.js'
 import updateLink from './components/changeLinks.js'
-import imgToURL from './components/Cloudinary.js'
 dotenv.config()
 
 const app = express()
@@ -49,7 +48,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     const {email, password} = await req.body
     const success = await login(email, password, userDB)
-    if(!success) res.status(401).json(
+    if(!success) return res.status(401).json(
         {
             message : "Invalid Credentials"
         }
@@ -94,7 +93,7 @@ app.post('/update', async (req, res) => {
     const collection = await userDB.collection('users')
     const result = await collection.findOneAndReplace({id : json.id}, json)
     
-    if(!result) res.status(404).json({
+    if(!result) return res.status(404).json({
         "message" : "User not found"
     })
     
@@ -112,7 +111,7 @@ app.get('/public', async (req, res) => {
     const collection = await userDB.collection("users")
     const user = await collection.findOne({id : id})
 
-    if(!user) res.status(404).json({
+    if(!user) return res.status(404).json({
         'message' : 'User not found'
     })
 
