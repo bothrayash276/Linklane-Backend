@@ -85,6 +85,7 @@ app.post('/update', async (req, res) => {
 
     const json = await req.body
 
+
     if (json.id !== accessToken.id) return res.status(401).json({
         'message' : 'Unauthorized Access'
     })
