@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { v4 } from 'uuid'
 
-export default async function signUp(name, email, password, img_url, bio, page_color, db) {
+export default async function signUp(name, email, password, img_url, bio, bg, page_color, db) {
     const hash = await bcrypt.hash(password, 10)
     const Schema = {
         "id" : v4(),
@@ -10,6 +10,7 @@ export default async function signUp(name, email, password, img_url, bio, page_c
         "email" : email,
         "password" : hash,
         "bio" : bio,
+        'bg' : bg,
         "img_url" : img_url,
         "page_color" : page_color,
         "links" : []

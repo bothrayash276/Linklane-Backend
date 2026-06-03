@@ -22,10 +22,10 @@ const userDB = client.db("Linklane")
 
 // Register Port
 app.post('/register', async (req, res) => {
-    const {name, email, password, img_url, bio, page_color} = await req.body
+    const {name, email, password, img_url, bio, bg, page_color} = await req.body
     //const URL = await imgToURL(img_url)
     const URL = 'none'
-    const success = await signUp(name, email, password, URL, bio, page_color, userDB)
+    const success = await signUp(name, email, password, URL, bio, bg, page_color, userDB)
     
     if(!success) return res.status(409).json(
         {
